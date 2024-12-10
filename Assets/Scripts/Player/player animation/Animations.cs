@@ -5,11 +5,7 @@ using UnityEngine;
 public class Animations : MonoBehaviour
 {
     public Animator playerAnimator;
-
-    public bool isWalking;
-    public bool isJumping;
-    public bool isFalling;
-    public bool idle;
+    public AttackAnimation Attack;
 
     public void Idle(Animator animator)
     {
@@ -20,7 +16,8 @@ public class Animations : MonoBehaviour
 
     }
 
-    public void WalkingAnimation(Animator animator){
+    public void WalkingAnimation(Animator animator)
+    {
 
         animator.SetBool("Idle", false);
         animator.SetBool("isFalling", false);
@@ -29,8 +26,9 @@ public class Animations : MonoBehaviour
 
     }
 
-    public void JumpingAnimation(Animator animator){
-        
+    public void JumpingAnimation(Animator animator)
+    {
+
         animator.SetBool("Idle", false);
         animator.SetBool("isFalling", false);
         animator.SetBool("isWalking", false);
@@ -38,7 +36,8 @@ public class Animations : MonoBehaviour
 
     }
 
-    public void FallingAnimation(Animator animator){
+    public void FallingAnimation(Animator animator)
+    {
 
         animator.SetBool("Idle", false);
         animator.SetBool("isFalling", false);
@@ -46,4 +45,10 @@ public class Animations : MonoBehaviour
         animator.SetBool("isFalling", true);
 
     }
+    public void AttackAnimation(Animator animator)
+    {
+        animator.SetInteger("tapCount", Attack.tapCount);
+    }
+
 }
+

@@ -13,8 +13,6 @@ public class PlayerMovement : MonoBehaviour
     public PlayerMovementStats MoveStats;
     public Animations AnimationScript;
     public Animator playerAnimator;
-    private PlayerAttack Attack;
-    public Animator AttackAnimator;
     [SerializeField] private Collider2D _feetColl;
     [SerializeField] private Collider2D _bodyColl;
 
@@ -60,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
         _isFacingRight = true;
         _rb = GetComponent<Rigidbody2D>();
         AnimationScript.playerAnimator = GetComponent<Animator>();
-        Attack = GetComponent<PlayerAttack>();
     }
 
     private void Update()
@@ -110,11 +107,7 @@ public class PlayerMovement : MonoBehaviour
             _moveVelocity = Vector2.Lerp(_moveVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
             _rb.velocity = new Vector2(_moveVelocity.x, _rb.velocity.y);
 
-            if(AnimationScript.isWalking == false){
-
-                AnimationScript.WalkingAnimation(playerAnimator);
-                
-            }
+            AnimationScript.WalkingAnimation(playerAnimator);
             
         }
 
