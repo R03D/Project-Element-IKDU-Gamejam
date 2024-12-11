@@ -131,6 +131,7 @@ public class AttackAnimation : MonoBehaviour
 
         private void OnAttack(InputAction.CallbackContext context)
         {
+        Debug.Log("kaldt!");
             if (anim != null)
             {
                 lastTime = Time.time;
@@ -146,6 +147,7 @@ public class AttackAnimation : MonoBehaviour
 
         private void Update()
         {
+        //Debug.Log("tapcount" + tapCount);
             if (Time.time - lastTime > timeBetweenAttacks)
             {
                 tapCount = 0;

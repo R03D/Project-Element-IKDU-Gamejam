@@ -58,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
         _isFacingRight = true;
         _rb = GetComponent<Rigidbody2D>();
         AnimationScript.playerAnimator = GetComponent<Animator>();
+
     }
 
     private void Update()
