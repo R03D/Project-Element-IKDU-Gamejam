@@ -129,7 +129,7 @@ public class AttackAnimation : MonoBehaviour
             }
         }
 
-        private void OnAttack()
+        private void OnAttack(InputAction.CallbackContext context)
         {
         Debug.Log("kaldt!");
             if (anim != null)
