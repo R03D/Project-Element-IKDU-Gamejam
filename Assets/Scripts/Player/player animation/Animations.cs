@@ -45,10 +45,10 @@ public class Animations : MonoBehaviour
         animator.SetBool("isFalling", true);
 
     }
-    public void AttackAnimation(Animator animator)
-    {
-        animator.SetInteger("tapCount", Attack.tapCount);
-    }
+    //public void AttackAnimation(Animator animator)
+    //{
+    //    animator.SetInteger("tapCount", Attack.tapCount);
+    //}
 
 }
 

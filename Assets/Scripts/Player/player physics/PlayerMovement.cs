@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     //coyote time vars
     private float _coyoteTimer;
 
+
     private void Awake()
     {
         _isFacingRight = true;
@@ -145,6 +146,22 @@ public class PlayerMovement : MonoBehaviour
             transform.Rotate(0f, -180f, 0f);
         }
 
+    }
+    public void Attack()
+    {
+        if (_isGrounded)
+        playerAnimator.SetInteger("tapCount", playerAnimator.GetInteger("tapCount") + 1);
+    }
+    public void AttackedPressed ()
+    {
+
+        playerAnimator.SetBool("AttackPressed", true);
+    }
+    public void ResetAttack()
+    {
+        playerAnimator.SetBool("AttackPressed", false);
+        Debug.Log("reset");
+        playerAnimator.SetInteger("tapCount", 0);
     }
     #endregion
 

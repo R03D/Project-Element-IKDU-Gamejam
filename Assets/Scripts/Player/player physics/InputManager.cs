@@ -18,10 +18,11 @@ public class InputManager : MonoBehaviour
     private InputAction _jumpAction;
     private InputAction _runAction;
     private InputAction _attackAction;
-
+    PlayerMovement playerMovement;
     // Start is called before the first frame update
     private void Awake()
     {
+        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         PlayerInput = GetComponent<PlayerInput>();
         
 
@@ -42,6 +43,10 @@ public class InputManager : MonoBehaviour
 
         RunIsHeld = _runAction.IsPressed();
         AttackIsPressed = _attackAction.WasPressedThisFrame();
+        if(AttackIsPressed)
+        {
+            playerMovement.Attack();
+        }
        
     }
 }

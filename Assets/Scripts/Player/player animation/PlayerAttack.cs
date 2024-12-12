@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -12,10 +14,11 @@ public class PlayerAttack : MonoBehaviour
     public int comboStep = 0; // Tracker "combo-timer", hvor mange gange knappen trykkes når der laves attack. 
     public float lastAttackTime = 1f;  // Tracker det sidste attack der blev lavet. 
 
+    private float lastTime;
     // Start is called before the first frame update
     void Start()
     {
-        
+        lastTime = Time.time;
     }
 
     // Update is called once per frame
@@ -49,4 +52,21 @@ public class PlayerAttack : MonoBehaviour
     {
         comboStep = 0; // Resetter comboen 
     }
+    private void OnAttack()
+    {
+        Debug.Log("kaldt!");
+        if (animator != null)
+        {
+            /*lastTime = Time.time;
+            tapCount = Mathf.Clamp(tapCount + 1, 0, 3);
+            animator.SetInteger("tapCount", tapCount);
+            Debug.Log($"Tap Count: {tapCount}");
+            */
+        }
+        else
+        {
+            Debug.LogError("Animator is not assigned.");
+        }
+    }
+  
 }
