@@ -81,80 +81,89 @@ public class AttackAnimation : MonoBehaviour
     //}
 
 
-    
-        public Animator anim;
-        public PlayerInput playerInput;
-        public InputAction attackAction;
-        private Rigidbody2D rb;
 
-        public int tapCount;
-        private float timeBetweenAttacks = 0.5f;
-        private float lastTime;
-        private bool coroutineRunning;
+    public Animator anim;
+    public PlayerInput playerInput;
+    public InputAction attackAction;
+    private Rigidbody2D rb;
 
-        private void Awake()
+    public int tapCount;
+    private float timeBetweenAttacks = 0.5f;
+    private float lastTime;
+    private bool coroutineRunning;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        playerInput = GetComponent<PlayerInput>();
+
+        if (playerInput != null)
         {
-            rb = GetComponent<Rigidbody2D>();
-            playerInput = GetComponent<PlayerInput>();
-
-            if (playerInput != null)
-            {
-                attackAction = playerInput.actions["Attack"];
-            }
-
-            if (anim == null)
-            {
-                Debug.LogError("Animator not assigned in the Inspector.");
-            }
-
-            if (attackAction == null)
-            {
-                Debug.LogError("Attack action not found in PlayerInput.");
-            }
+            attackAction = playerInput.actions["Attack"];
         }
 
-        private void OnEnable()
+        if (anim == null)
         {
-            if (attackAction != null)
-            {
-                attackAction.performed += OnAttack;
-            }
+            Debug.LogError("Animator not assigned in the Inspector.");
         }
 
-        private void OnDisable()
+        if (attackAction == null)
         {
-            if (attackAction != null)
-            {
-                attackAction.performed -= OnAttack;
-            }
+            Debug.LogError("Attack action not found in PlayerInput.");
         }
+    }
 
-        private void OnAttack(InputAction.CallbackContext context)
+    private void OnEnable()
+    {
+        if (attackAction != null)
         {
+            attackAction.performed += OnAttack;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (attackAction != null)
+        {
+            attackAction.performed -= OnAttack;
+        }
+    }
+
+    private void OnAttack(InputAction.CallbackContext context)
+    {
         Debug.Log("kaldt!");
+        if (anim != null)
+        {
+            lastTime = Time.time;
+            tapCount = Mathf.Clamp(tapCount + 1, 0, 3);
+            anim.SetInteger("tapCount", tapCount);
+            Debug.Log($"Tap Count: {tapCount}");
+        }
+        else
+        {
+            Debug.LogError("Animator is not assigned.");
+        }
+    }
+
+    private void Update()
+    {
+        //Debug.Log("tapcount" + tapCount);
+        if (Time.time - lastTime > timeBetweenAttacks)
+        {
+            tapCount = 0;
             if (anim != null)
             {
-                lastTime = Time.time;
-                tapCount = Mathf.Clamp(tapCount + 1, 0, 3);
                 anim.SetInteger("tapCount", tapCount);
-                Debug.Log($"Tap Count: {tapCount}");
-            }
-            else
-            {
-                Debug.LogError("Animator is not assigned.");
-            }
-        }
-
-        private void Update()
-        {
-        //Debug.Log("tapcount" + tapCount);
-            if (Time.time - lastTime > timeBetweenAttacks)
-            {
-                tapCount = 0;
-                if (anim != null)
-                {
-                    anim.SetInteger("tapCount", tapCount);
-                }
             }
         }
     }
+    private void LateUpdate()
+    {
+        if (tapCount == 3)
+        {
+            anim.SetInteger("tapCount", 0);
+        }
+    }
+}
+    
+

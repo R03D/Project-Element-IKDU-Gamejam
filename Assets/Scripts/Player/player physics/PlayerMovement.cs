@@ -66,6 +66,11 @@ public class PlayerMovement : MonoBehaviour
     {
         CountTimers();
         JumpChecks();
+        if (playerAnimator.GetBool("AttackPressed"))
+        {
+            Debug.Log("yeet");
+            playerAnimator.SetBool("AttackPressed", false);
+        }
     }
 
     private void FixedUpdate()
@@ -86,6 +91,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         VerticalLastVelocity = _rb.velocity.y;
+    }
+
+    private void LateUpdtae()
+    {
+        if (playerAnimator.GetBool("AttackPressed"))
+        {
+            Debug.Log("yeet");
+            playerAnimator.SetBool("AttackPressed", false);
+        }
     }
     #region Movement
 
@@ -120,6 +134,14 @@ public class PlayerMovement : MonoBehaviour
             AnimationScript.Idle(playerAnimator);
         }
     }
+    public void ResetTapCount()
+    {
+        if(playerAnimator.GetInteger("tapCount") == 3)
+        {
+            playerAnimator.SetInteger("tapCount", 0);
+        }
+    }
+
     private void TurnCheck(Vector2 moveInput)
     {
         if (_isFacingRight && moveInput.x < 0)
@@ -149,8 +171,12 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Attack()
     {
-        if (_isGrounded)
-        playerAnimator.SetInteger("tapCount", playerAnimator.GetInteger("tapCount") + 1);
+        if (_isGrounded && playerAnimator.GetInteger("tapCount") < 3)
+        {
+            playerAnimator.SetInteger("tapCount", playerAnimator.GetInteger("tapCount") + 1);
+            AttackedPressed();
+        }
+
     }
     public void AttackedPressed ()
     {
