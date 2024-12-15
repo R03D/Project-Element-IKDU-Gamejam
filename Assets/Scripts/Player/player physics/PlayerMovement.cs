@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     // Collision check vars
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
+    private RaycastHit2D _fistHit;
     private bool _isGrounded;
     private bool _bumpedHead;
 
@@ -40,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private float _fastFallTime;
     private float _fastFallReleaseSpeed;
     private int _numberOfJumpsUsed;
+    
 
     //apex vars
     private float _apexPoint;
@@ -52,6 +55,9 @@ public class PlayerMovement : MonoBehaviour
 
     //coyote time vars
     private float _coyoteTimer;
+
+    //Attack vars
+    private float lastAttack;
 
 
     private void Awake()
@@ -66,10 +72,17 @@ public class PlayerMovement : MonoBehaviour
     {
         CountTimers();
         JumpChecks();
+
+        Debug.DrawRay(transform.position + Vector3.up * 1.5f, Vector2.right * 2 * (_isFacingRight ?1:-1), Color.white, 3);
+
         if (playerAnimator.GetBool("AttackPressed"))
         {
-            Debug.Log("yeet");
-            playerAnimator.SetBool("AttackPressed", false);
+            //playerAnimator.SetBool("AttackPressed", false);
+        }
+        if (Time.time > lastAttack + 1)
+        {
+            playerAnimator.SetInteger("tapCount", 0);
+
         }
     }
 
@@ -97,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerAnimator.GetBool("AttackPressed"))
         {
-            Debug.Log("yeet");
+            Debug.Log("bam");
             playerAnimator.SetBool("AttackPressed", false);
         }
     }
@@ -175,19 +188,20 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetInteger("tapCount", playerAnimator.GetInteger("tapCount") + 1);
             AttackedPressed();
+            lastAttack = Time.time;
         }
 
     }
     public void AttackedPressed ()
     {
-
+        Debug.Log("paw");
         playerAnimator.SetBool("AttackPressed", true);
+
     }
     public void ResetAttack()
     {
         playerAnimator.SetBool("AttackPressed", false);
         Debug.Log("reset");
-        playerAnimator.SetInteger("tapCount", 0);
     }
     #endregion
 
@@ -419,6 +433,23 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             _bumpedHead = false;
+        }
+
+    }
+    public void hitCheck()
+    {
+        _fistHit = Physics2D.CircleCast(transform.position + Vector3.up*1.5f + Vector3.right*(_isFacingRight ? 1.5f : -1.5f), 1f, Vector2.right* (_isFacingRight ? .1f : -.1f), .1f);
+        if (_fistHit.collider != null)
+        {
+            Debug.Log(_fistHit.collider.gameObject.name);
+            Debug.Log("hit");
+            if (_fistHit.collider.tag == "enemy" || _fistHit.collider.tag == "boss")
+            {
+               // _fistHit.collider.gameObject.GetComponent<gotHitScript>().hit(); //kalder "hit" metoden i gotHitScript på enemy
+            }
+
+            
+
         }
 
     }
